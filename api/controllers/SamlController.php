@@ -65,8 +65,6 @@ class SamlController extends Controller {
         $existinguser = User::findOne(['email' => $email]);
         $token = $_COOKIE['PHPSESSIDIDP'];
         if ($existinguser) {
-            // Log this user in.
-            // todo how do we log in?
             // Set the users token to the PHPSESSIDIDP cookie value.
             $existinguser->setAttribute('access_token', $token);
             $existinguser->save();
@@ -77,7 +75,6 @@ class SamlController extends Controller {
             $cookiedetails['access_token'] = $existinguser->getAttribute('access_token');
             // Set cookie to be used by front end. Set everything that makes up the authUser state.
             setcookie('logbook_authUser', json_encode($cookiedetails), 0, '/', 'localhost');
-
         } else {
             // Create user that we know exists in the idp.
             $user = User::instance();

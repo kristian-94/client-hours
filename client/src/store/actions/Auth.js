@@ -6,7 +6,6 @@ import { getAuthConfig } from './Clients';
 export const SET_USERDATA = 'SET_USERDATA';
 export const SIGNED_IN = 'SIGNED_IN';
 export const SIGNED_OUT = 'SIGNED_OUT';
-export const SIGNED_UP = 'SIGNED_UP';
 
 // Here we fetch all user data and put that into our redux state.
 export const fetchUsers = () => {
