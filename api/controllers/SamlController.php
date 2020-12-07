@@ -62,19 +62,13 @@ class SamlController extends Controller {
         $givenname = $param['attributes']['givenName'][0];
 
         // Check if this user exists already.
-        $existinguser = User::findOne(['email' => $email]);
+        $user = User::findOne(['email' => $email]);
         $token = $_COOKIE['PHPSESSIDIDP'];
-        if ($existinguser) {
+        $cookiedetails = [];
+        if ($user) {
             // Set the users token to the PHPSESSIDIDP cookie value.
-            $existinguser->setAttribute('access_token', $token);
-            $existinguser->save();
-            $cookiedetails = [];
-            $cookiedetails['username'] = $existinguser->getAttribute('username');
-            $cookiedetails['email'] = $existinguser->getAttribute('email');
-            $cookiedetails['role'] = $existinguser->getAttribute('role');
-            $cookiedetails['access_token'] = $existinguser->getAttribute('access_token');
-            // Set cookie to be used by front end. Set everything that makes up the authUser state.
-            setcookie('logbook_authUser', json_encode($cookiedetails), 0, '/', 'localhost');
+            $user->setAttribute('access_token', $token);
+            $user->save();
         } else {
             // Create user that we know exists in the idp.
             $user = User::instance();
@@ -90,6 +84,12 @@ class SamlController extends Controller {
             // Assign basic role to this new user.
             $auth->assign($auth->getRole('basic'), $user->getAttribute('id'));
         }
-        return $email;
+        $cookiedetails['username'] = $user->getAttribute('username');
+        $cookiedetails['email'] = $user->getAttribute('email');
+        $cookiedetails['role'] = $user->getAttribute('role');
+        $cookiedetails['access_token'] = $user->getAttribute('access_token');
+        // Set cookie to be used by front end. Set everything that makes up the authUser state.
+        setcookie('logbook_authUser', json_encode($cookiedetails), 0, '/', 'localhost');
+        return true;
     }
 }
