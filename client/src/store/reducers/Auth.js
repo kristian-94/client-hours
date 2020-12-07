@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
       };
     case SIGNED_IN:
       // We just signed in so store our token in local storage and in redux state.
-      const currentuser = action.data.authUser;
+      const currentuser = action.data;
       localStorage.setItem('authUser', JSON.stringify(currentuser));
       return {
         ...state,

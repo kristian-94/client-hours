@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import './index.scss';
 import './bootstrap-overrides.scss';
 import { Provider } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import authReducer from './store/reducers/Auth';
@@ -19,7 +20,9 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App/>
+      <CookiesProvider>
+        <App/>
+      </CookiesProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

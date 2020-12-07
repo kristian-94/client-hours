@@ -50,6 +50,7 @@
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-sweetalert": "^5.1.12",
     "react-contenteditable": "^3.3.5",
+    "react-cookie": "^4.0.3",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-uuid": "^1.0.2",

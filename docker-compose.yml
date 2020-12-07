@@ -26,6 +26,17 @@ services:
       - ./client:/siteroot
     stdin_open: true
     restart: always
+  saml:
+    image: kristophjunge/test-saml-idp
+    ports:
+      - "8081:8080"
+      - "8443:8443"
+    environment:
+      SIMPLESAMLPHP_SP_ENTITY_ID: http://localhost:8080/saml2/catalyst/metadata
+      SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE: http://localhost:8080/index.php/saml/acs
+      SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE: http://localhost:8080/index.php/saml/sls
+    volumes:
+      - ./docker/saml/samlusers.php:/var/www/simplesamlphp/config/authsources.php
   build-test:
     build: ./docker/build
     ports:

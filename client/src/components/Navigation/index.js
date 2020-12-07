@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import * as NAMES from '../../constants/names';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {useCookies} from "react-cookie";
+import * as authActions from "../../store/actions/Auth";
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+  const [cookies] = useCookies(['logbook_authUser']);
+  useEffect(() => {
+    // See if we can get the user details from the cookie.
+    const authUser = cookies.logbook_authUser;
+    if (authUser) {
+      // Sign in to the react app. Set auth details in redux and make sure they're saved in local storage.
+      dispatch(authActions.signIn(authUser));
+    }
+  }, [cookies, dispatch]);
   const authUser = useSelector(state => state.auth.currentUser);
   if (authUser === null || authUser === [] || authUser === undefined) {
     return <NavigationNonAuth/>;

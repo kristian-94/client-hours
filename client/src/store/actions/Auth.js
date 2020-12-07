@@ -20,25 +20,15 @@ export const fetchUsers = () => {
     dispatch({ type: SET_USERDATA, users: response.data });
   };
 };
-// Here we log in, and get back our token if successful.
-export const signIn = (email, password) => {
+export const signIn = (authUser = null) => {
+  if (authUser === null) {
+    // Go off to saml land and try to sign in there.
+    console.log('going to saml land')
+    window.location.href = BACKEND_URL + 'saml/login';
+  }
   return async (dispatch) => {
-    const data = {
-      email: email,
-      password: password,
-    };
-    // It is standard practice to send "plaintext" passwords over HTTPS.
-    // The passwords are ultimately not plaintext, since the client-server communication is encrypted as per TLS.
-    const response = await axios.post(BACKEND_URL + 'user/login', data, config.CONFIG_JSON);
-    if (response.status !== 200) {
-      throw new Error('Didnt get 200 response when signing in');
-    }
-
-    if (response.data.success === false) {
-      throw new Error(response.data.message);
-    }
-
-    dispatch({ type: SIGNED_IN, data: response.data });
+    // We've already logged in to the idp. Now we are logging in to our react app.
+    dispatch({ type: SIGNED_IN, data: authUser });
   };
 };
 
