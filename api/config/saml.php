@@ -2,11 +2,11 @@
 //This variable is for simplesaml example only.
 // For a real IdP, you must set the url values in the 'idp'
 // config to conform to the IdP's real urls.
-$idp_host = 'http://localhost:8081/simplesaml';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../..");
 $dotenv->load();
-\OneLogin\Saml2\Utils::setProxyVars(true);
-\OneLogin\Saml2\Utils::setSelfPort(8080);
+\OneLogin\Saml2\Utils::setProxyVars($_ENV['PROXY_VARS'] ?? false);
+\OneLogin\Saml2\Utils::setSelfPort($_ENV['SELF_PORT'] ?? 80);
+$idp_host = $_ENV['IDP_HOST_URL'] ?? '';
 
 return $settings = array(
 
@@ -46,7 +46,7 @@ return $settings = array(
             // URL Location where the <Response> from the IdP will be returned,
             // using HTTP-POST binding.
             // Leave blank to use the '{idpName}_acs' route, e.g. 'test_acs'
-            'url' => 'http://localhost:8080/index.php/saml/acs',
+            'url' => $_ENV['SAML2_SP_ACS'] ?? 'http://localhost:8080/index.php/saml/acs',
         ),
         // Specifies info about where and how the <Logout Response> message MUST be
         // returned to the requester, in this case our SP.
@@ -55,7 +55,7 @@ return $settings = array(
             // URL Location where the <Response> from the IdP will be returned,
             // using HTTP-Redirect binding.
             // Leave blank to use the '{idpName}_sls' route, e.g. 'test_sls'
-            'url' => 'http://localhost:8080/index.php/saml/sls',
+            'url' => $_ENV['SAML2_SP_SLS'] ?? 'http://localhost:8080/index.php/saml/sls',
         ),
     ),
 

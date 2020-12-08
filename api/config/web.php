@@ -2,8 +2,6 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-$spBaseUrl = 'http://localhost:8081';
-$idpBaseUrl = 'http://localhost:8081/simplesaml';
 
 $config = [
     'id' => 'basic',

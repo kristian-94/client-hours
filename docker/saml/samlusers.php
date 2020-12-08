@@ -14,5 +14,11 @@ $config = [
             'sn'        => 'User',
             'mail'      => 'test@test.com'
         ],
+        'johnny:ilovedogs' => [
+            'uid'       => 'test',
+            'givenName' => 'johnny',
+            'sn'        => 'User',
+            'mail'      => 'johnny@test.com'
+        ],
     ],
 ];

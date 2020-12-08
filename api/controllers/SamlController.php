@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\User;
+use Dotenv\Dotenv;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBasicAuth;
@@ -57,7 +58,10 @@ class SamlController extends Controller {
      * @param array $param has 'attributes', 'nameId' , 'sessionIndex', 'nameIdNameQualifier' and 'nameIdSPNameQualifier' from response
      */
     public function callback($param) {
+
+
         // Use param attribute to find what user we have now.
+        // todo will this work for catalyst idp? might return in slightly different format.
         $email = $param['attributes']['mail'][0];
         $givenname = $param['attributes']['givenName'][0];
 
@@ -89,7 +93,9 @@ class SamlController extends Controller {
         $cookiedetails['role'] = $user->getAttribute('role');
         $cookiedetails['access_token'] = $user->getAttribute('access_token');
         // Set cookie to be used by front end. Set everything that makes up the authUser state.
-        setcookie('logbook_authUser', json_encode($cookiedetails), 0, '/', 'localhost');
+        $dotenv = Dotenv::createImmutable(__DIR__ . "/../..");
+        $dotenv->load();
+        setcookie('logbook_authUser', json_encode($cookiedetails), 0, '/', $_ENV['SP_DOMAIN']);
         return true;
     }
 }
